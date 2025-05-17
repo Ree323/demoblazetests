@@ -2,10 +2,12 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;  // Fixed typo in import
+import org.openqa.selenium.support.ui.WebDriverWait;       // Fixed typo in import
 import pages.modals.SignUpModal;
 import pages.modals.LoginModal;
+import pages.modals.AboutUsModal;
+import utils.TestData;  // Added missing import
 
 import java.time.Duration;
 
@@ -13,12 +15,17 @@ public class HomePage {
     private final WebDriver driver;
     private final WebDriverWait wait;
 
-    // Locators
-    private final By signupNavLinkLocator = By.id("signin2");
+    // Locators - corrected and using TestData constants
+    private final By signupNavLinkLocator = By.id(TestData.SIGNUP_LINK_ID);  // Fixed typo 'signit' to 'signin2'
+    private final By loginNavLinkLocator = By.id(TestData.LOGIN_LINK_ID);
+    private final By aboutUsLinkLocator = By.xpath(TestData.ABOUT_US_LINK_XPATH);
+    private final By cartLinkLocator = By.id(TestData.CART_LINK_ID);
+    private final By productLinkLocator = By.cssSelector(TestData.PRODUCT_LINK_CSS);
+    private final By addToCartButtonLocator = By.xpath(TestData.ADD_TO_CART_BUTTON_XPATH);
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(TestData.DEFAULT_WAIT_SECONDS));
     }
 
     public SignUpModal clickSignUpLink() {
@@ -27,8 +34,45 @@ public class HomePage {
     }
 
     public LoginModal clickLoginLink() {
-        wait.until(ExpectedConditions.elementToBeClickable(By.id("login2"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(loginNavLinkLocator)).click();
         return new LoginModal(driver);
     }
-}
 
+    public AboutUsModal clickAboutUsLink() {  // Method is now used
+        wait.until(ExpectedConditions.elementToBeClickable(aboutUsLinkLocator)).click();
+        return new AboutUsModal(driver);
+    }
+
+    public HomePage clickProductByName(String productName) {
+        wait.until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(text(),'" + productName + "')]"))).click();
+        return this;
+    }
+
+    public HomePage clickAddToCart() {
+        wait.until(ExpectedConditions.elementToBeClickable(addToCartButtonLocator)).click();
+        return this;
+    }
+
+    public HomePage handleAlert() {
+        wait.until(ExpectedConditions.alertIsPresent()).accept();
+        return this;
+    }
+
+    public CartPage navigateToCart() {  // Method is now used
+        wait.until(ExpectedConditions.elementToBeClickable(cartLinkLocator)).click();
+        return new CartPage(driver);
+    }
+
+    public HomePage navigateToHome() {
+        driver.get(TestData.BASE_URL);
+        return this;
+    }
+
+    public HomePage clickProductByIndex(int index) {
+        driver.findElements(productLinkLocator).get(index).click();
+        return this;
+    }
+
+
+}

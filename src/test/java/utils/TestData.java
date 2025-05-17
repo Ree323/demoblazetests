@@ -62,4 +62,45 @@ public class TestData {
     public static final String USERNAME_FIELD_ID = "loginusername";
     public static final String PASSWORD_FIELD_ID = "loginpassword";
     public static final String WELCOME_MESSAGE_ID = "nameofuser";
+
+    // Add to TestData.java
+    public static final String CAROUSEL_CONTAINER_ID = "carouselExampleIndicators";
+    public static final String CAROUSEL_ACTIVE_SLIDE_CSS = ".carousel-item.active";
+    public static final String CAROUSEL_SLIDES_CSS = ".carousel-item";
+    public static final String CAROUSEL_INDICATORS_CSS = ".carousel-indicators li";
+    public static final String CAROUSEL_NEXT_BUTTON_CSS = ".carousel-control-next";
+    public static final String CAROUSEL_PREV_BUTTON_CSS = ".carousel-control-prev";
+
+    // Test Products
+    public static final String PRODUCT_SAMSUNG_S7 = "Samsung galaxy s7";
+    public static final String PRODUCT_SAMSUNG_S6 = "Samsung galaxy s6";
+    public static final String PRODUCT_NEXUS_6 = "Nexus 6";
+
+    // Locators (for HomePage)
+    public static final String SIGNUP_LINK_ID = "signin2";
+    public static final String ABOUT_US_LINK_XPATH = "//a[contains(text(),'About us')]";
+    public static final String CART_LINK_ID = "cartur";
+    public static final String PRODUCT_LINK_CSS = "a.hrefch";
+    public static final String ADD_TO_CART_BUTTON_XPATH = "//a[contains(text(),'Add to cart')]";
+
+    // Locators (for CartPage)
+    public static final String CART_ITEMS_CSS = "#tbodyid tr";
+    public static final String PLACE_ORDER_BUTTON_XPATH = "//button[contains(text(),'Place Order')]";
+    public static final String DELETE_BUTTON_XPATH = "//a[contains(text(),'Delete')]";
+    public static final String TOTAL_PRICE_ID = "totalp";
+
+    // Order Form Data
+    public static final String TEST_NAME = "Test User";
+    public static final String TEST_COUNTRY = "Test Country";
+    public static final String TEST_CITY = "Test City";
+    public static final String TEST_CREDIT_CARD = "1234123412341234";
+    public static final String TEST_MONTH = "12";
+    public static final String TEST_YEAR = "2025";
+
+    // Timeouts
+    public static final int DEFAULT_WAIT_SECONDS = 10;
+    public static final int ALERT_WAIT_SECONDS = 5;
+    public static final int CART_UPDATE_DELAY_MS = 2000;
+
+
 }

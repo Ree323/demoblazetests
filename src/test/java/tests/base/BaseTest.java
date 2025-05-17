@@ -1,5 +1,6 @@
 package tests.base;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -15,6 +16,14 @@ public class BaseTest {
 
     @BeforeAll
     public static void setupReport() {
+        // Initialize ExtentReports
+        ExtentReportManager.init();
+    }
+
+    @BeforeAll
+    public static void setupClass() {
+        // Setup WebDriverManager
+        WebDriverManager.chromedriver().setup();
         // Initialize ExtentReports
         ExtentReportManager.init();
     }
@@ -64,4 +73,7 @@ public class BaseTest {
         // Generate the report - THIS IS CRITICAL
         ExtentReportManager.flush();
     }
+
+    // In BaseTest.java, update the setupClass method
+
 }
