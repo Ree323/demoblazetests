@@ -2,15 +2,12 @@ package tests.base;
 
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import pages.HomePage;
 import pages.modals.LoginModal;
 import utils.ExtentReportManager;
 import utils.TestData;
-
-import java.util.List;
 
 public class CheckoutTest extends BaseTest {
 
