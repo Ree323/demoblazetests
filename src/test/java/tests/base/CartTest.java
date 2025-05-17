@@ -9,7 +9,7 @@ import pages.HomePage;
 import tests.base.BaseTest;
 import utils.ExtentReportManager;
 import utils.TestData;
-
+import pages.CartPage;
 import java.time.Duration;
 import java.util.List;
 
