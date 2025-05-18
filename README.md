@@ -1,4 +1,3 @@
-﻿# DemoBlaz-AutoTesting
 # DemoBlaz-AutoTesting
 # E-Commerce Website Test Automation Framework DemoBlaze
 
