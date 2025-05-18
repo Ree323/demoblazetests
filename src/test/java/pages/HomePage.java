@@ -8,6 +8,9 @@ import pages.modals.SignUpModal;
 import pages.modals.LoginModal;
 import pages.modals.AboutUsModal;
 import utils.TestData;  // Added missing import
+import java.util.List;                     // <-- for List<>
+import org.openqa.selenium.WebElement;      // <-- for WebElement
+
 
 import java.time.Duration;
 
@@ -70,9 +73,36 @@ public class HomePage {
     }
 
     public HomePage clickProductByIndex(int index) {
-        driver.findElements(productLinkLocator).get(index).click();
+        // wait until at least one product link is visible
+        List<WebElement> products = wait.until(
+                ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                        By.cssSelector(TestData.PRODUCT_LINK_CSS)));
+
+        if (products.isEmpty()) {
+            throw new IllegalStateException("No products found – selector may be wrong or page not loaded");
+        }
+        products.get(index).click();
         return this;
     }
+
+
+    // NEW – return price & generic waits
+    public double getProductPrice(String name) {
+        clickProductByName(name);
+        String priceText = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(
+                        By.cssSelector("h3.price-container"))).getText();
+        double price = Double.parseDouble(priceText.replaceAll("[^\\d.]", ""));
+        driver.navigate().back();
+        return price;
+    }
+
+    public HomePage clickFirstVisibleProduct() {
+        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(
+                By.cssSelector(TestData.PRODUCT_LINK_CSS))).get(0).click();
+        return this;
+    }
+
 
 
 }

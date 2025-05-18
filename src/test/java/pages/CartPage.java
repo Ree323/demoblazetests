@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.TestData;
@@ -36,7 +37,7 @@ public class CartPage {
 
     public void navigateToCart() {
         driver.get(TestData.CART_URL);
-        wait.until(ExpectedConditions.presenceOfElementLocated(cartItemsLocator));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("tbodyid")));
     }
 
     public int getCartItemCount() {
@@ -56,8 +57,12 @@ public class CartPage {
     public void deleteAllItems() {
         List<WebElement> deleteButtons = driver.findElements(deleteButtonLocator);
         for (WebElement button : deleteButtons) {
-            button.click();
-            wait.until(ExpectedConditions.stalenessOf(button));
+            try {
+                button.click();
+                wait.until(ExpectedConditions.stalenessOf(button));
+            } catch (StaleElementReferenceException e) {
+                // Element was already removed, continue with next
+            }
         }
     }
 
@@ -115,6 +120,12 @@ public class CartPage {
         clickPurchaseButton();
         handleConfirmation();
         return this;
+    }
+
+    public double firstItemPrice() {
+        return Double.parseDouble(driver.findElement(
+                        By.cssSelector("#tbodyid tr td:nth-child(3)"))
+                .getText().replaceAll("[^\\d.]", ""));
     }
 
 
