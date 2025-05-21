@@ -1,9 +1,6 @@
 package pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import utils.TestData;
@@ -126,6 +123,50 @@ public class CartPage {
         return Double.parseDouble(driver.findElement(
                         By.cssSelector("#tbodyid tr td:nth-child(3)"))
                 .getText().replaceAll("[^\\d.]", ""));
+    }
+
+    public boolean isOrderFormDisplayed() {
+        try {
+            return driver.findElement(By.id("orderModal")).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        try {
+            return driver.findElement(By.cssSelector(".sweet-alert")).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public String getErrorMessageText() {
+        try {
+            return driver.findElement(By.cssSelector(".sweet-alert p")).getText();
+        } catch (NoSuchElementException e) {
+            return "No error message found";
+        }
+    }
+
+    public boolean isPlaceOrderButtonDisplayed() {
+        try {
+            return driver.findElement(By.cssSelector("button[data-target='#orderModal']")).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public boolean isCartEmptyMessageDisplayed() {
+        try {
+            return driver.findElement(By.xpath("//td[contains(text(),'Cart is empty')]")).isDisplayed();
+        } catch (NoSuchElementException e) {
+            return false;
+        }
+    }
+
+    public WebElement getCartItem(String productName) {
+        return driver.findElement(By.xpath("//td[contains(text(),'" + productName + "')]/ancestor::tr"));
     }
 
 

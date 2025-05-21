@@ -1,5 +1,6 @@
 package tests.base;
 
+import com.aventstack.extentreports.ExtentTest;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,6 +24,20 @@ public class AboutUsTest extends BaseTest {
     private final By closeButton = By.cssSelector("#videoModal button[aria-label='Close']");
     private final By xButton = By.cssSelector("#videoModal .close");
 
+    @BeforeEach
+    public void setUpTest(TestInfo testInfo) {
+        ExtentReportManager.setDriver(driver);
+        ExtentTest test = ExtentReportManager.createTest(
+                testInfo.getDisplayName(),
+                testInfo.getTestMethod().get().getAnnotation(DisplayName.class).value()
+        );
+    }
+
+    @AfterEach
+    public void tearDownTest() {
+        ExtentReportManager.flush();
+    }
+
     private void openAboutUsModal() {
         ExtentReportManager.logStep("Clicking 'About us' link");
         try {
@@ -35,31 +50,37 @@ public class AboutUsTest extends BaseTest {
             throw e;
         }
     }
+
     /**
      * TC_ABT_001: Verify About Us modal opens and displays correct content
      */
     @Test
     @DisplayName("TC_ABT_001: Verify About Us modal content")
     public void testAboutUsModalContent() {
-        ExtentReportManager.logStep("1. Open About Us modal");
-        openAboutUsModal();
+        try {
+            ExtentReportManager.logStep("1. Open About Us modal");
+            openAboutUsModal();
 
-        ExtentReportManager.logStep("2. Verify modal content");
-        WebElement modal = wait.until(ExpectedConditions.visibilityOfElementLocated(videoModal));
+            ExtentReportManager.logStep("2. Verify modal content");
+            WebElement modal = wait.until(ExpectedConditions.visibilityOfElementLocated(videoModal));
 
-        assertAll("Modal content verification",
-                () -> assertEquals("About us", modal.findElement(modalTitle).getText(),
-                        "Modal title should match"),
-                () -> assertTrue(modal.findElement(videoElement).isDisplayed(),
-                        "Video element should be visible"),
-                () -> assertTrue(modal.findElement(closeButton).isDisplayed(),
-                        "Close button should be visible"),
-                () -> assertTrue(modal.findElement(xButton).isDisplayed(),
-                        "X button should be visible")
-        );
+            assertAll("Modal content verification",
+                    () -> assertEquals("About us", modal.findElement(modalTitle).getText(),
+                            "Modal title should match"),
+                    () -> assertTrue(modal.findElement(videoElement).isDisplayed(),
+                            "Video element should be visible"),
+                    () -> assertTrue(modal.findElement(closeButton).isDisplayed(),
+                            "Close button should be visible"),
+                    () -> assertTrue(modal.findElement(xButton).isDisplayed(),
+                            "X button should be visible")
+            );
 
-        ExtentReportManager.logPass("All modal content verified successfully");
-        ExtentReportManager.captureScreenshot("About Us Modal Content");
+            ExtentReportManager.logPass("All modal content verified successfully");
+            ExtentReportManager.captureScreenshot("About Us Modal Content");
+        } catch (Exception e) {
+            ExtentReportManager.logFail("Test failed: " + e.getMessage());
+            throw e;
+        }
     }
 
     /**
@@ -68,18 +89,23 @@ public class AboutUsTest extends BaseTest {
     @Test
     @DisplayName("TC_ABT_002: Verify modal closes with X button")
     public void testModalClosesWithXButton() {
-        ExtentReportManager.logStep("1. Open About Us modal");
-        openAboutUsModal();
+        try {
+            ExtentReportManager.logStep("1. Open About Us modal");
+            openAboutUsModal();
 
-        ExtentReportManager.logStep("2. Click X button");
-        driver.findElement(xButton).click();
+            ExtentReportManager.logStep("2. Click X button");
+            driver.findElement(xButton).click();
 
-        ExtentReportManager.logStep("3. Verify modal closes");
-        assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(videoModal)),
-                "Modal should close after clicking X button");
+            ExtentReportManager.logStep("3. Verify modal closes");
+            assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(videoModal)),
+                    "Modal should close after clicking X button");
 
-        ExtentReportManager.logPass("Modal closed successfully with X button");
-        ExtentReportManager.captureScreenshot("After X Button Click");
+            ExtentReportManager.logPass("Modal closed successfully with X button");
+            ExtentReportManager.captureScreenshot("After X Button Click");
+        } catch (Exception e) {
+            ExtentReportManager.logFail("Test failed: " + e.getMessage());
+            throw e;
+        }
     }
 
     /**
@@ -88,18 +114,23 @@ public class AboutUsTest extends BaseTest {
     @Test
     @DisplayName("TC_ABT_003: Verify modal closes with Close button")
     public void testModalClosesWithCloseButton() {
-        ExtentReportManager.logStep("1. Open About Us modal");
-        openAboutUsModal();
+        try {
+            ExtentReportManager.logStep("1. Open About Us modal");
+            openAboutUsModal();
 
-        ExtentReportManager.logStep("2. Click Close button");
-        driver.findElement(closeButton).click();
+            ExtentReportManager.logStep("2. Click Close button");
+            driver.findElement(closeButton).click();
 
-        ExtentReportManager.logStep("3. Verify modal closes");
-        assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(videoModal)),
-                "Modal should close after clicking Close button");
+            ExtentReportManager.logStep("3. Verify modal closes");
+            assertTrue(wait.until(ExpectedConditions.invisibilityOfElementLocated(videoModal)),
+                    "Modal should close after clicking Close button");
 
-        ExtentReportManager.logPass("Modal closed successfully with Close button");
-        ExtentReportManager.captureScreenshot("After Close Button Click");
+            ExtentReportManager.logPass("Modal closed successfully with Close button");
+            ExtentReportManager.captureScreenshot("After Close Button Click");
+        } catch (Exception e) {
+            ExtentReportManager.logFail("Test failed: " + e.getMessage());
+            throw e;
+        }
     }
 
     /**
@@ -108,26 +139,31 @@ public class AboutUsTest extends BaseTest {
     @Test
     @DisplayName("TC_ABT_004: Verify video playback (known issue)")
     public void testVideoPlayback() {
-        ExtentReportManager.logStep("1. Open About Us modal");
-        openAboutUsModal();
+        try {
+            ExtentReportManager.logStep("1. Open About Us modal");
+            openAboutUsModal();
 
-        ExtentReportManager.logStep("2. Get video element");
-        WebElement video = driver.findElement(videoElement);
+            ExtentReportManager.logStep("2. Get video element");
+            WebElement video = driver.findElement(videoElement);
 
-        ExtentReportManager.logStep("3. Attempt playback (expected to fail)");
-        ((JavascriptExecutor)driver).executeScript("arguments[0].play();", video);
+            ExtentReportManager.logStep("3. Attempt playback (expected to fail)");
+            ((JavascriptExecutor)driver).executeScript("arguments[0].play();", video);
 
-        // Change to expect Selenium's TimeoutException instead
-        assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
-            new WebDriverWait(driver, Duration.ofSeconds(5))
-                    .until(driver -> {
-                        Object result = ((JavascriptExecutor)driver)
-                                .executeScript("return !arguments[0].paused", video);
-                        return result != null && (Boolean)result;
-                    });
-        }, "Video should fail to play (known issue)");
+            // Change to expect Selenium's TimeoutException instead
+            assertThrows(org.openqa.selenium.TimeoutException.class, () -> {
+                new WebDriverWait(driver, Duration.ofSeconds(5))
+                        .until(driver -> {
+                            Object result = ((JavascriptExecutor)driver)
+                                    .executeScript("return !arguments[0].paused", video);
+                            return result != null && (Boolean)result;
+                        });
+            }, "Video should fail to play (known issue)");
 
-        ExtentReportManager.logPass("Verified known video playback issue");
-        ExtentReportManager.captureScreenshot("Video Playback Attempt");
+            ExtentReportManager.logPass("Verified known video playback issue");
+            ExtentReportManager.captureScreenshot("Video Playback Attempt");
+        } catch (Exception e) {
+            ExtentReportManager.logFail("Test failed: " + e.getMessage());
+            throw e;
+        }
     }
 }
